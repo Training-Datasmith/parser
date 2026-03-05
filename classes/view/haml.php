@@ -53,9 +53,9 @@ class View_Haml extends \View
 	// This function attempts to create a unique directory for each
 	// compiled template.
 	// TODO: Extend Jade's caching class?
-	public function cache_init($file_path)
+	public function cache_init($file_path): void
 	{
-		$cache_key = md5($file_path);
+		$cache_key = md5((string) $file_path);
 		$cache_path = \Config::get('parser.View_Haml.cache_dir', null)
 			.substr($cache_key, 0, 2).DS.substr($cache_key, 2, 2);
 

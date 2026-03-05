@@ -43,12 +43,12 @@ class View_Handlebars extends \View
 			// write the compiled code
 			file_put_contents($compiled, '<?php ' . LightnCandy::compile(
 				file_get_contents($file),
-				array(
-					'partialresolver' => function($cx, $name) {
+				[
+					'partialresolver' => function($cx, $name): string|false {
 						$file = \Finder::search('views', $name, '.'.$this->extension, false, false);
 						return empty($file) ? "[ PARTIAL $name NOT FOUND!]" : file_get_contents($file);
 					}
-				) + \Config::get('parser.View_Handlebars.environment', array())
+				] + \Config::get('parser.View_Handlebars.environment', [])
 			));
 		}
 

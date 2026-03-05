@@ -53,23 +53,23 @@ class View_Mustache extends \View
 			return static::$_parser;
 		}
 
-		$options = array(
+		$options = [
 			// TODO: set 'logger' with Monolog instance.
 			'cache'   => \Config::get('parser.View_Mustache.environment.cache_dir', APPPATH.'cache'.DS.'mustache'.DS),
 			'charset' => \Config::get('parser.View_Mustache.environment.charset', 'UTF-8'),
-		);
+		];
 
-		if ($partials = \Config::get('parser.View_Mustache.environment.partials', array()))
+		if ($partials = \Config::get('parser.View_Mustache.environment.partials', []))
 		{
 			$options['partials'] = $partials;
 		}
 
-		if ($helpers = \Config::get('parser.View_Mustache.environment.helpers', array()))
+		if ($helpers = \Config::get('parser.View_Mustache.environment.helpers', []))
 		{
 			$options['helpers'] = $helpers;
 		}
 
-		if ($partials = \Config::get('parser.View_Mustache.environment.partials_loader', array()))
+		if ($partials = \Config::get('parser.View_Mustache.environment.partials_loader', []))
 		{
 			$options['partials_loader'] = new Mustache_Loader_FilesystemLoader($partials);
 		}

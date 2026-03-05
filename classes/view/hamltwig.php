@@ -22,11 +22,10 @@ class View_HamlTwig extends View_Twig {
 	protected static $_environment;
 
 	/**
-	 * @access public
-	 * @static
-	 * @return void
-	 */
-	public static function _init()
+     * @access public
+     * @static
+     */
+    public static function _init(): void
 	{
 		// Include View_HamlTwig file(s) defined in config.
 		$includes = \Config::get('parser.View_Twig.include');
@@ -60,7 +59,7 @@ class View_HamlTwig extends View_Twig {
 		$view_name = pathinfo($file, PATHINFO_BASENAME);
 
 		// Twig Loader
-		$views_paths = \Config::get('parser.View_Twig.views_paths', array(APPPATH . 'views'));
+		$views_paths = \Config::get('parser.View_Twig.views_paths', [APPPATH . 'views']);
 		array_unshift($views_paths, pathinfo($file, PATHINFO_DIRNAME));
 
 		if ( ! empty($global_data))

@@ -75,7 +75,7 @@ class View_Dwoo extends \View
 		// Security
 		static::$_parser_security = new Dwoo_Security_Policy;
 		static::$_parser_security->setPhpHandling(\Config::get('parser.View_Dwoo.environment.allow_php_tags', 2));
-		static::$_parser_security->allowPhpFunction(\Config::get('parser.View_Dwoo.environment.allow_php_func', array()));
+		static::$_parser_security->allowPhpFunction(\Config::get('parser.View_Dwoo.environment.allow_php_func', []));
 
 		static::$_parser->setSecurityPolicy(static::$_parser_security);
 

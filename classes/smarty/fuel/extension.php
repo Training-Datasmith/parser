@@ -34,42 +34,42 @@ class Smarty_Fuel_Extension
 	 */
 	public function __construct(\Smarty $smarty)
 	{
-		$smarty->registerPlugin('function', 'fuel_version', array($this, 'fuel_version'));
-		$smarty->registerPlugin('function', 'url', array($this, 'url'));
-		$smarty->registerPlugin('function', 'base_url', array('Uri', 'base'));
-		$smarty->registerPlugin('function', 'current_url', array('Uri', 'current'));
-		$smarty->registerPlugin('function', 'uri_segment', array($this, 'uri_segment'));
-		$smarty->registerPlugin('function', 'uri_segments', array('Uri', 'segments'));
-		$smarty->registerPlugin('function', 'config', array($this, 'config_get'));
-		$smarty->registerPlugin('function', 'lang', array($this, 'lang_get'));
-		$smarty->registerPlugin('block', 'form', array($this, 'form'));
-		$smarty->registerPlugin('function', 'form_input', array($this, 'form_input'));
-		$smarty->registerPlugin('function', 'form_password', array($this, 'form_password'));
-		$smarty->registerPlugin('function', 'form_hidden', array($this, 'form_hidden'));
-		$smarty->registerPlugin('function', 'form_button', array($this, 'form_button'));
-		$smarty->registerPlugin('function', 'form_reset', array($this, 'form_reset'));
-		$smarty->registerPlugin('function', 'form_submit', array($this, 'form_submit'));
-		$smarty->registerPlugin('function', 'form_textarea', array($this, 'form_textarea'));
-		$smarty->registerPlugin('block', 'form_fieldset', array($this, 'form_fieldset'));
-		$smarty->registerPlugin('function', 'form_label', array($this, 'form_label'));
-		$smarty->registerPlugin('function', 'form_checkbox', array($this, 'form_checkbox'));
-		$smarty->registerPlugin('function', 'form_radio', array($this, 'form_radio'));
-		$smarty->registerPlugin('function', 'form_file', array($this, 'form_file'));
-		$smarty->registerPlugin('function', 'form_select', array($this, 'form_select'));
-		$smarty->registerPlugin('function', 'form_val', array($this, 'form_val'));
-		$smarty->registerPlugin('function', 'input_get', array($this, 'input_get'));
-		$smarty->registerPlugin('function', 'input_post', array($this, 'input_post'));
-		$smarty->registerPlugin('function', 'asset_add_path', array($this, 'asset_add_path'));
-		$smarty->registerPlugin('function', 'asset_css', array($this, 'asset_css'));
-		$smarty->registerPlugin('function', 'asset_js', array($this, 'asset_js'));
-		$smarty->registerPlugin('function', 'asset_img', array($this, 'asset_img'));
-		$smarty->registerPlugin('function', 'asset_render', array($this, 'asset_render'));
-		$smarty->registerPlugin('function', 'asset_find_file', array($this, 'asset_find_file'));
-		$smarty->registerPlugin('function', 'html_anchor', array($this, 'html_anchor'));
-		$smarty->registerPlugin('function', 'session_get_flash', array($this, 'session_get_flash'));
-		$smarty->registerPlugin('block', 'markdown', array($this, 'markdown_parse'));
-		$smarty->registerPlugin('function', 'auth_has_access', array($this, 'auth_has_access'));
-		$smarty->registerPlugin('function', 'auth_check', array($this, 'auth_check'));
+		$smarty->registerPlugin('function', 'fuel_version', $this->fuel_version(...));
+		$smarty->registerPlugin('function', 'url', $this->url(...));
+		$smarty->registerPlugin('function', 'base_url', ['Uri', 'base']);
+		$smarty->registerPlugin('function', 'current_url', ['Uri', 'current']);
+		$smarty->registerPlugin('function', 'uri_segment', $this->uri_segment(...));
+		$smarty->registerPlugin('function', 'uri_segments', ['Uri', 'segments']);
+		$smarty->registerPlugin('function', 'config', $this->config_get(...));
+		$smarty->registerPlugin('function', 'lang', $this->lang_get(...));
+		$smarty->registerPlugin('block', 'form', $this->form(...));
+		$smarty->registerPlugin('function', 'form_input', $this->form_input(...));
+		$smarty->registerPlugin('function', 'form_password', $this->form_password(...));
+		$smarty->registerPlugin('function', 'form_hidden', $this->form_hidden(...));
+		$smarty->registerPlugin('function', 'form_button', $this->form_button(...));
+		$smarty->registerPlugin('function', 'form_reset', $this->form_reset(...));
+		$smarty->registerPlugin('function', 'form_submit', $this->form_submit(...));
+		$smarty->registerPlugin('function', 'form_textarea', $this->form_textarea(...));
+		$smarty->registerPlugin('block', 'form_fieldset', $this->form_fieldset(...));
+		$smarty->registerPlugin('function', 'form_label', $this->form_label(...));
+		$smarty->registerPlugin('function', 'form_checkbox', $this->form_checkbox(...));
+		$smarty->registerPlugin('function', 'form_radio', $this->form_radio(...));
+		$smarty->registerPlugin('function', 'form_file', $this->form_file(...));
+		$smarty->registerPlugin('function', 'form_select', $this->form_select(...));
+		$smarty->registerPlugin('function', 'form_val', $this->form_val(...));
+		$smarty->registerPlugin('function', 'input_get', $this->input_get(...));
+		$smarty->registerPlugin('function', 'input_post', $this->input_post(...));
+		$smarty->registerPlugin('function', 'asset_add_path', $this->asset_add_path(...));
+		$smarty->registerPlugin('function', 'asset_css', $this->asset_css(...));
+		$smarty->registerPlugin('function', 'asset_js', $this->asset_js(...));
+		$smarty->registerPlugin('function', 'asset_img', $this->asset_img(...));
+		$smarty->registerPlugin('function', 'asset_render', $this->asset_render(...));
+		$smarty->registerPlugin('function', 'asset_find_file', $this->asset_find_file(...));
+		$smarty->registerPlugin('function', 'html_anchor', $this->html_anchor(...));
+		$smarty->registerPlugin('function', 'session_get_flash', $this->session_get_flash(...));
+		$smarty->registerPlugin('block', 'markdown', $this->markdown_parse(...));
+		$smarty->registerPlugin('function', 'auth_has_access', $this->auth_has_access(...));
+		$smarty->registerPlugin('function', 'auth_check', $this->auth_check(...));
 	}
 
 	/**
@@ -88,10 +88,10 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function url($params)
+	public function url(array $params)
 	{
-		$uri = isset($params['uri']) ? $params['uri'] : '';
-		$named_params = isset($params['params']) ? $params['params'] : array();
+		$uri = $params['uri'] ?? '';
+		$named_params = $params['params'] ?? [];
 		if ($named_uri = \Router::get($uri, $named_params))
 		{
 			$uri = $named_uri;
@@ -105,7 +105,7 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  mixed segment string or false
 	 */
-	public function uri_segment($params)
+	public function uri_segment(array $params)
 	{
 		if (isset($params['segment']))
 		{
@@ -120,7 +120,7 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  mixed string or array
 	 */
-	public function config_get($params)
+	public function config_get(array $params)
 	{
 		if (isset($params['item']))
 		{
@@ -136,13 +136,13 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  mixed string or false
 	 */
-	public function lang_get($params)
+	public function lang_get(array $params)
 	{
 		if (isset($params['line']))
 		{
-			$parameters = isset($params['params']) ? $params['params'] : array();
-			$default = isset($params['default']) ? $params['default'] : null;
-			$language = isset($params['lang']) ? $params['lang'] : null;
+			$parameters = $params['params'] ?? [];
+			$default = $params['default'] ?? null;
+			$language = $params['lang'] ?? null;
 			return \Lang::get($params['line'], $parameters, $default, $language);
 		}
 		return false;
@@ -153,19 +153,16 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form($params, $content, $smarty, &$repeat)
+	public function form(array $params, string $content, $smarty, &$repeat)
 	{
 		//$content is null when repeat is true and has block content when repeat is false
 		if ($repeat)
 		{
-			$attributes = isset($params['attrs']) ? $params['attrs'] : array();
-			$hidden = isset($params['hidden']) ? $params['hidden'] : array();
+			$attributes = $params['attrs'] ?? [];
+			$hidden = $params['hidden'] ?? [];
 			return \Form::open($attributes, $hidden);
 		}
-		else
-		{
-			return $content . \Form::close();
-		}
+        return $content . \Form::close();
 	}
 
 	/**
@@ -173,19 +170,16 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_fieldset($params, $content, $smarty, &$repeat)
+	public function form_fieldset(array $params, string $content, $smarty, &$repeat)
 	{
 		//$content is null when repeat is true and has block content when repeat is false
 		if ($repeat)
 		{
-			$attributes = isset($params['attrs']) ? $params['attrs'] : array();
-			$legend = isset($params['legend']) ? $params['legend'] : null;
+			$attributes = $params['attrs'] ?? [];
+			$legend = $params['legend'] ?? null;
 			return \Form::fieldset_open($attributes, $legend);
 		}
-		else
-		{
-			return $content . \Form::fieldset_close();
-		}
+        return $content . \Form::fieldset_close();
 	}
 
 	/**
@@ -194,14 +188,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_input($params)
+	public function form_input(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
 		return \Form::input($params['field'], $value, $attributes);
 	}
 
@@ -211,14 +205,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_password($params)
+	public function form_password(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
 		return \Form::password($params['field'], $value, $attributes);
 	}
 
@@ -228,14 +222,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_hidden($params)
+	public function form_hidden(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
 		return \Form::hidden($params['field'], $value, $attributes);
 	}
 
@@ -245,14 +239,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_button($params)
+	public function form_button(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
 		return \Form::button($params['field'], $value, $attributes);
 	}
 
@@ -262,14 +256,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_submit($params)
+	public function form_submit(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
 		return \Form::submit($params['field'], $value, $attributes);
 	}
 
@@ -279,14 +273,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_reset($params)
+	public function form_reset(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
 		return \Form::reset($params['field'], $value, $attributes);
 	}
 
@@ -296,14 +290,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_textarea($params)
+	public function form_textarea(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
 		return \Form::textarea($params['field'], $value, $attributes);
 	}
 
@@ -313,14 +307,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_label($params)
+	public function form_label(array $params)
 	{
 		if ( ! isset($params['text']))
 		{
 			throw new \UnexpectedValueException("The text parameter is required.");
 		}
-		$id = isset($params['id']) ? $params['id'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$id = $params['id'] ?? null;
+		$attributes = $params['attrs'] ?? [];
 		return \Form::label($params['text'], $id, $attributes);
 	}
 
@@ -330,15 +324,15 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_checkbox($params)
+	public function form_checkbox(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
-		$checked = isset($params['checked']) ? $params['checked'] : null;
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
+		$checked = $params['checked'] ?? null;
 		return \Form::checkbox($params['field'], $value, $checked, $attributes);
 	}
 
@@ -348,15 +342,15 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_radio($params)
+	public function form_radio(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$value = isset($params['value']) ? $params['value'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
-		$checked = isset($params['checked']) ? $params['checked'] : null;
+		$value = $params['value'] ?? null;
+		$attributes = $params['attrs'] ?? [];
+		$checked = $params['checked'] ?? null;
 		return \Form::checkbox($params['field'], $value, $checked, $attributes);
 	}
 
@@ -366,15 +360,15 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_select($params)
+	public function form_select(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$values = isset($params['values']) ? $params['values'] : null;
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
-		$options = isset($params['options']) ? $params['options'] : array();
+		$values = $params['values'] ?? null;
+		$attributes = $params['attrs'] ?? [];
+		$options = $params['options'] ?? [];
 		return \Form::select($params['field'], $values, $options, $attributes);
 	}
 
@@ -384,13 +378,13 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_file($params)
+	public function form_file(array $params)
 	{
 		if ( ! isset($params['field']))
 		{
 			throw new \UnexpectedValueException("The field parameter is required.");
 		}
-		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
+		$attributes = $params['attrs'] ?? [];
 		return \Form::file($params['field'], $attributes);
 	}
 
@@ -400,10 +394,10 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function form_val($params)
+	public function form_val(array $params)
 	{
-		$index = isset($params['index']) ? $params['index'] : null;
-		$default = isset($params['default']) ? $params['default'] : null;
+		$index = $params['index'] ?? null;
+		$default = $params['default'] ?? null;
 		return \Input::param($index, $default);
 	}
 
@@ -413,10 +407,10 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function input_get($params)
+	public function input_get(array $params)
 	{
-		$index = isset($params['index']) ? $params['index'] : null;
-		$default = isset($params['default']) ? $params['default'] : null;
+		$index = $params['index'] ?? null;
+		$default = $params['default'] ?? null;
 		return \Input::get($index, $default);
 	}
 
@@ -426,10 +420,10 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return  string
 	 */
-	public function input_post($params)
+	public function input_post(array $params)
 	{
-		$index = isset($params['index']) ? $params['index'] : null;
-		$default = isset($params['default']) ? $params['default'] : null;
+		$index = $params['index'] ?? null;
+		$default = $params['default'] ?? null;
 		return \Input::post($index, $default);
 	}
 
@@ -439,13 +433,13 @@ class Smarty_Fuel_Extension
 	 * Required: path
 	 *
 	 */
-	public function asset_add_path($params)
+	public function asset_add_path(array $params): void
 	{
 		if ( ! isset($params['path']))
 		{
 			throw new \UnexpectedValueException('Asset path must be specified');
 		}
-		$type = isset($params['type']) ? $params['type'] : null;
+		$type = $params['type'] ?? null;
 		\Asset::add_path($params['path'], $type);
 	}
 
@@ -455,15 +449,15 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return mixed string or nothing if group is filled
 	 */
-	public function asset_css($params)
+	public function asset_css(array $params)
 	{
 		if ( ! isset($params['refs']))
 		{
 			throw new \UnexpectedValueException("The refs parameter is required.");
 		}
-		$group = isset($params['group']) ? $params['group'] : null;
-		$attrs = isset($params['attrs']) ? $params['attrs'] : array();
-		$raw = isset($params['raw']) ? $params['raw'] : false;
+		$group = $params['group'] ?? null;
+		$attrs = $params['attrs'] ?? [];
+		$raw = $params['raw'] ?? false;
 		return \Asset::css($params['refs'], $attrs, $group, $raw);
 	}
 
@@ -473,15 +467,15 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return mixed string or nothing if group is filled
 	 */
-	public function asset_js($params)
+	public function asset_js(array $params)
 	{
 		if ( ! isset($params['refs']))
 		{
 			throw new \UnexpectedValueException("The refs parameter is required.");
 		}
-		$group = isset($params['group']) ? $params['group'] : null;
-		$attrs = isset($params['attrs']) ? $params['attrs'] : array();
-		$raw = isset($params['raw']) ? $params['raw'] : false;
+		$group = $params['group'] ?? null;
+		$attrs = $params['attrs'] ?? [];
+		$raw = $params['raw'] ?? false;
 		return \Asset::js($params['refs'], $attrs, $group, $raw);
 	}
 
@@ -491,14 +485,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return mixed string or nothing if group is filled
 	 */
-	public function asset_img($params)
+	public function asset_img(array $params)
 	{
 		if ( ! isset($params['refs']))
 		{
 			throw new \UnexpectedValueException("The refs parameter is required.");
 		}
-		$group = isset($params['group']) ? $params['group'] : null;
-		$attrs = isset($params['attrs']) ? $params['attrs'] : array();
+		$group = $params['group'] ?? null;
+		$attrs = $params['attrs'] ?? [];
 		return \Asset::img($params['refs'], $attrs, $group);
 	}
 
@@ -508,10 +502,10 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return string
 	 */
-	public function asset_render($params)
+	public function asset_render(array $params)
 	{
-		$group = isset($params['group']) ? $params['group'] : null;
-		$raw = isset($params['raw']) ? $params['raw'] : false;
+		$group = $params['group'] ?? null;
+		$raw = $params['raw'] ?? false;
 		return \Asset::render($group, $raw);
 	}
 
@@ -521,7 +515,7 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return string
 	 */
-	public function asset_find_file($params)
+	public function asset_find_file(array $params)
 	{
 		if ( ! isset($params['file']))
 		{
@@ -531,7 +525,7 @@ class Smarty_Fuel_Extension
 		{
 			throw new \UnexpectedValueException("The type parameter is required.");
 		}
-		$folder = isset($params['folder']) ? $params['folder'] : '';
+		$folder = $params['folder'] ?? '';
 		return \Asset::find_file($params['file'], $params['type'], $folder);
 	}
 
@@ -541,7 +535,7 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return string
 	 */
-	public function html_anchor($params)
+	public function html_anchor(array $params)
 	{
 		if ( ! isset($params['href']))
 		{
@@ -551,8 +545,8 @@ class Smarty_Fuel_Extension
 		{
 			throw new \UnexpectedValueException("The text parameter is required.");
 		}
-		$attrs = isset($params['attrs']) ? $params['attrs'] : array();
-		$secure = isset($params['secure']) ? $params['secure'] : null;
+		$attrs = $params['attrs'] ?? [];
+		$secure = $params['secure'] ?? null;
 		return \Html::anchor($params['href'], $params['text'], $attrs, $secure);
 	}
 
@@ -562,14 +556,14 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return mixed
 	 */
-	public function session_get_flash($params)
+	public function session_get_flash(array $params)
 	{
 		if ( ! isset($params['var']))
 		{
 			throw new \UnexpectedValueException("The var parameter is required.");
 		}
-		$default = isset($params['default']) ? $params['default'] : null;
-		$expire = isset($params['expire']) ? $params['expire'] : false;
+		$default = $params['default'] ?? null;
+		$expire = $params['expire'] ?? false;
 		return \Session::get_flash($params['var'], $default, $expire);
 	}
 
@@ -593,7 +587,7 @@ class Smarty_Fuel_Extension
 	 *
 	 * @return bool
 	 */
-	public function auth_has_access($params)
+	public function auth_has_access(array $params)
 	{
 		if ( ! isset($params['cond']))
 		{

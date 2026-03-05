@@ -17,19 +17,19 @@ class View extends \Fuel\Core\View
 	/**
 	 * @var  array  Holds the list of loaded files.
 	 */
-	protected static $loaded_files = array();
+	protected static $loaded_files = [];
 
-	public static function _init()
+	public static function _init(): void
 	{
 		\Config::load('parser', true);
 
 		// Get class name
-		$class = \Inflector::denamespace(get_called_class());
+		$class = \Inflector::denamespace(static::class);
 
-		if ($class !== __CLASS__)
+		if ($class !== self::class)
 		{
 			// Include necessary files
-			foreach ((array) \Config::get('parser.'.$class.'.include', array()) as $include)
+			foreach ((array) \Config::get('parser.'.$class.'.include', []) as $include)
 			{
 				if ( ! array_key_exists($include, static::$loaded_files))
 				{
@@ -69,7 +69,7 @@ class View extends \Fuel\Core\View
 		// if no extension is defined, use the called class
 		if ($class === null)
 		{
-			$class = get_called_class();
+			$class = static::class;
 		}
 
 		// class can also be an array config
@@ -86,7 +86,7 @@ class View extends \Fuel\Core\View
 		}
 
 		// include necessary parser files
-		foreach ((array) \Config::get('parser.'.$class.'.include', array()) as $include)
+		foreach ((array) \Config::get('parser.'.$class.'.include', []) as $include)
 		{
 			if ( ! array_key_exists($include, static::$loaded_files))
 			{

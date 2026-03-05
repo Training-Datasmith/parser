@@ -52,7 +52,7 @@ class View_Jade extends \View
 	protected function tale_parser($cachepath)
 	{
 		// get the config
-		$config = \Config::get('parser.View_Jade', array());
+		$config = \Config::get('parser.View_Jade', []);
 
 		// add the cache path for this template
 		$config['cachePath'] = $cachepath;
@@ -102,7 +102,7 @@ class View_Jade extends \View
 	// compiled template.
 	protected function cache_init($file_path)
 	{
-		$cache_key = md5($file_path);
+		$cache_key = md5((string) $file_path);
 		$cache_path = \Config::get('parser.View_Jade.cache_dir', null)
 			.substr($cache_key, 0, 2).DS.substr($cache_key, 2, 2);
 

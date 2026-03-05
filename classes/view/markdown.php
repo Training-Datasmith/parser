@@ -35,7 +35,7 @@ class View_Markdown extends \View
 		return static::parser()->transform($contents);
 	}
 
-	protected static function pre_process($_type = 'php', $_view_filename, array $_data = array())
+	protected static function pre_process($_type = 'php', $_view_filename = null, array $_data = [])
 	{
 		if ($_type == 'php')
 		{

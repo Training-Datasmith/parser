@@ -60,7 +60,7 @@ class View_Smarty extends \View
 		static::$_parser->compile_dir       = \Config::get('parser.View_Smarty.environment.compile_dir', APPPATH.'tmp'.DS.'Smarty'.DS.'templates_c'.DS);
 		static::$_parser->config_dir        = \Config::get('parser.View_Smarty.environment.config_dir', APPPATH.'tmp'.DS.'Smarty'.DS.'configs'.DS);
 		static::$_parser->cache_dir         = \Config::get('parser.View_Smarty.environment.cache_dir', APPPATH.'cache'.DS.'Smarty'.DS);
-		$plugins_dir 						= \Config::get('parser.View_Smarty.environment.plugins_dir', array());
+		$plugins_dir 						= \Config::get('parser.View_Smarty.environment.plugins_dir', []);
 		static::$_parser->addPluginsDir($plugins_dir);
 
 		static::$_parser->caching           = \Config::get('parser.View_Smarty.environment.caching', false);
@@ -72,9 +72,9 @@ class View_Smarty extends \View
 		static::$_parser->left_delimiter    = \Config::get('parser.View_Smarty.delimiters.left', '{');
 		static::$_parser->right_delimiter   = \Config::get('parser.View_Smarty.delimiters.right', '}');
 
-		static::$_parser->autoload_filters  = \Config::get('parser.View_Smarty.environment.autoload_filters', array());
-		static::$_parser->default_modifiers = \Config::get('parser.View_Smarty.environment.default_modifiers', array());
-                foreach (\Config::get('parser.View_Smarty.extensions', array()) as $extension){
+		static::$_parser->autoload_filters  = \Config::get('parser.View_Smarty.environment.autoload_filters', []);
+		static::$_parser->default_modifiers = \Config::get('parser.View_Smarty.environment.default_modifiers', []);
+                foreach (\Config::get('parser.View_Smarty.extensions', []) as $extension){
                     new $extension(static::$_parser);
                 }
 		return static::$_parser;

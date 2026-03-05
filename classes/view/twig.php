@@ -23,7 +23,7 @@ class View_Twig extends \View
 	protected static $_parser_loader;
 	protected static $_twig_lexer_conf;
 
-	public static function _init()
+	public static function _init(): void
 	{
 		parent::_init();
 
@@ -45,7 +45,7 @@ class View_Twig extends \View
 		$view_name = pathinfo($file, PATHINFO_BASENAME);
 
 		// Twig Loader
-		$views_paths = \Config::get('parser.View_Twig.views_paths', array(APPPATH . 'views'));
+		$views_paths = \Config::get('parser.View_Twig.views_paths', [APPPATH . 'views']);
 		array_unshift($views_paths, pathinfo($file, PATHINFO_DIRNAME));
 		static::$_parser_loader = new Twig_Loader_Filesystem($views_paths);
 
@@ -98,7 +98,7 @@ class View_Twig extends \View
 		}
 
 		// Twig Environment
-		$twig_env_conf = \Config::get('parser.View_Twig.environment', array('optimizer' => -1));
+		$twig_env_conf = \Config::get('parser.View_Twig.environment', ['optimizer' => -1]);
 		static::$_parser = new Twig_Environment(static::$_parser_loader, $twig_env_conf);
 
 		foreach (\Config::get('parser.View_Twig.extensions') as $ext)

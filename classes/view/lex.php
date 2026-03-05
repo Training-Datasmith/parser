@@ -28,7 +28,7 @@ class View_Lex extends \View
 		return static::$_parser;
 	}
 
-	public static function injectNoparse($template)
+	public static function injectNoparse($template): void
 	{
 		\Lex\Parser::injectNoparse($template);
 	}
