@@ -65,8 +65,8 @@ class View_Mustache extends \View
             $options['helpers'] = $helpers;
         }
 
-        if ($partials = \Config::get('parser.View_Mustache.environment.partials_loader', [])) {
-            $options['partials_loader'] = new Mustache_Loader_FilesystemLoader($partials);
+        if ($partials_loader = \Config::get('parser.View_Mustache.environment.partials_loader', [])) {
+            $options['partials_loader'] = new Mustache_Loader_FilesystemLoader($partials_loader);
         }
 
         static::$_parser = new Mustache_Engine($options);

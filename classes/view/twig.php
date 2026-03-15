@@ -94,7 +94,7 @@ class View_Twig extends \View
         $twig_env_conf = \Config::get('parser.View_Twig.environment', ['optimizer' => -1]);
         static::$_parser = new Twig_Environment(static::$_parser_loader, $twig_env_conf);
 
-        foreach (\Config::get('parser.View_Twig.extensions') as $ext) {
+        foreach (\Config::get('parser.View_Twig.extensions', []) as $ext) {
             static::$_parser->addExtension(new $ext());
         }
 

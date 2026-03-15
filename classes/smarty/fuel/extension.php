@@ -14,13 +14,6 @@ declare(strict_types=1);
 
 namespace Parser;
 
-use Asset;
-use Config;
-use Form;
-use Input;
-use Lang;
-use Markdown;
-use Uri;
 
 /**
  * Provides Smarty support for commonly used FuelPHP classes and methods.
@@ -119,7 +112,7 @@ class Smarty_Fuel_Extension
     public function config_get(array $params)
     {
         if (isset($params['item'])) {
-            $default = $params['default'] ? null : $params['default'];
+            $default = $params['default'] ?? null;
             return \Config::get($params['item'], $default);
         }
         return '';
@@ -333,7 +326,7 @@ class Smarty_Fuel_Extension
         $value = $params['value'] ?? null;
         $attributes = $params['attrs'] ?? [];
         $checked = $params['checked'] ?? null;
-        return \Form::checkbox($params['field'], $value, $checked, $attributes);
+        return \Form::radio($params['field'], $value, $checked, $attributes);
     }
 
     /**
@@ -408,8 +401,8 @@ class Smarty_Fuel_Extension
     }
 
     /**
-     * Provide addess to Asset::add_path
-     * Usage: {form_val path='' type=''}
+     * Provide access to Asset::add_path
+     * Usage: {asset_add_path path='' type=''}
      * Required: path
      *
      */

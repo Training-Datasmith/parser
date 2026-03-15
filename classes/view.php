@@ -58,7 +58,7 @@ class View extends \Fuel\Core\View
             $class = \Config::get('parser.extensions.'.$extension, null);
 
             // Only get rid of the extension if it is not an absolute file path
-            if ($file[0] !== '/' and $file[1] !== ':') {
+            if (strlen($file) > 1 and $file[0] !== '/' and $file[1] !== ':') {
                 $file = $extension ? preg_replace('/\.'.preg_quote($extension).'$/i', '', $file) : $file;
             }
         }
@@ -85,6 +85,11 @@ class View extends \Fuel\Core\View
                 require $include;
                 static::$loaded_files[$include] = true;
             }
+        }
+
+        // validate the class is a View subclass before instantiation
+        if (! is_subclass_of($class, \View::class)) {
+            throw new \FuelException('Invalid parser class: '.$class);
         }
 
         // instantiate the Parser class without auto-loading the view file

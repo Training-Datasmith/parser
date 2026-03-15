@@ -37,8 +37,9 @@ class View_Markdown extends \View
     protected static function pre_process($_type = 'php', $_view_filename = null, array $_data = [])
     {
         if ($_type == 'php') {
-            // Import the view variables to local namespace
-            $_data and extract($_data, EXTR_REFS);
+            // Import the view variables to local namespace; EXTR_SKIP prevents overwriting
+            // the underscore-prefixed local variables used by this method
+            $_data and extract($_data, EXTR_SKIP);
 
             // Capture the view output
             ob_start();

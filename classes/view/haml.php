@@ -25,7 +25,7 @@ class View_Haml extends \View
     {
         $file = $file_override ?: $this->file_name;
 
-        static::cache_init($file);
+        $this->cache_init($file);
         $file = static::parser()->parse($file, static::$_cache);
 
         return parent::process_file($file);
@@ -49,19 +49,23 @@ class View_Haml extends \View
         return static::$_parser;
     }
 
-    // Jade stores cached templates as the filename in plain text,
-    // so there is a high chance of name collisions (ex: index.jade).
+    // Haml stores cached templates as the filename in plain text,
+    // so there is a high chance of name collisions (ex: index.haml).
     // This function attempts to create a unique directory for each
     // compiled template.
-    // TODO: Extend Jade's caching class?
     public function cache_init($file_path): void
     {
-        $cache_key = md5((string) $file_path);
-        $cache_path = \Config::get('parser.View_Haml.cache_dir', null)
-            .substr($cache_key, 0, 2).DS.substr($cache_key, 2, 2);
+        $cache_dir = \Config::get('parser.View_Haml.cache_dir', null);
 
-        if ($cache_path !== null and ! is_dir($cache_path)) {
-            mkdir($cache_path, 0777, true);
+        if ($cache_dir === null) {
+            throw new \FuelException('parser.View_Haml.cache_dir must be configured');
+        }
+
+        $cache_key = md5((string) $file_path);
+        $cache_path = $cache_dir.substr($cache_key, 0, 2).DS.substr($cache_key, 2, 2);
+
+        if (! is_dir($cache_path)) {
+            mkdir($cache_path, 0755, true);
         }
 
         static::$_cache = $cache_path;

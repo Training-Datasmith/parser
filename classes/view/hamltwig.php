@@ -30,7 +30,7 @@ class View_HamlTwig extends View_Twig
     public static function _init(): void
     {
         // Include View_HamlTwig file(s) defined in config.
-        $includes = \Config::get('parser.View_Twig.include');
+        $includes = \Config::get('parser.View_HamlTwig.include');
 
         foreach ((array) $includes as $include) {
             require $include;
@@ -78,7 +78,6 @@ class View_HamlTwig extends View_Twig
 
         $twig_lexer = new Twig_Lexer(static::$_parser, static::$_twig_lexer_conf);
         static::$_parser->setLexer($twig_lexer);
-        //\Debug::dump(static::parser()); exit();
         try {
             $result = static::parser()->render($view_name, $local_data);
         } catch (\Exception $e) {

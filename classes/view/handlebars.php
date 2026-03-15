@@ -40,23 +40,27 @@ class View_Handlebars extends \View
                 \File::create_dir(APPPATH, substr($compiled_path, strlen(APPPATH)));
             }
 
-            // write the compiled code
+            // write the compiled code atomically to prevent race conditions on concurrent requests
+            $ext = $this->extension;
             file_put_contents($compiled, '<?php ' . LightnCandy::compile(
                 file_get_contents($file),
                 [
-                    'partialresolver' => function ($cx, $name): string|false {
-                        $file = \Finder::search('views', $name, '.'.$this->extension, false, false);
-                        return empty($file) ? "[ PARTIAL $name NOT FOUND!]" : file_get_contents($file);
+                    'partialresolver' => function ($cx, $name) use ($ext): string|false {
+                        $partial = \Finder::search('views', $name, '.'.$ext, false, false);
+                        return empty($partial) ? "[ PARTIAL $name NOT FOUND!]" : file_get_contents($partial);
                     },
                 ] + \Config::get('parser.View_Handlebars.environment', [])
-            ));
+            ), LOCK_EX);
         }
 
         // fetch the compiled template and render it
         try {
             $data = $this->get_data();
-            $result = include($compiled);
-            $result = $result($data);
+            $renderer = include($compiled);
+            if (! is_callable($renderer)) {
+                throw new \FuelException('Compiled Handlebars template did not return a callable: '.$compiled);
+            }
+            $result = $renderer($data);
         } catch (\Exception $e) {
             // Delete the output buffer & re-throw the exception
             ob_end_clean();

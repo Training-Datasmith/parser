@@ -18,7 +18,6 @@ use Twig_Extension;
 use Twig_Function_Function;
 use Twig_Function_Method;
 use Twig_SimpleFunction;
-use Uri;
 
 /**
  * Provides Twig support for commonly used FuelPHP classes and methods.
