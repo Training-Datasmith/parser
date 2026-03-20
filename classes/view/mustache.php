@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Fuel is a fast, lightweight, community driven PHP 5.4+ framework.
  *
@@ -11,21 +11,17 @@ declare(strict_types=1);
  * @copyright  2010 - 2019 Fuel Development Team
  * @link       https://fuelphp.com
  */
-
 namespace Parser;
 
 use Mustache_Engine;
-use Mustache_Loader_FilesystemLoader;
-
+use Mustache_loader_filesystem_Loader;
 class View_Mustache extends \View
 {
     protected static $_parser;
-
     protected function process_file($file_override = false)
     {
         $file = $file_override ?: $this->file_name;
         $data = $this->get_data();
-
         try {
             $result = static::parser()->render(file_get_contents($file), $data);
         } catch (\Exception $e) {
@@ -33,13 +29,10 @@ class View_Mustache extends \View
             ob_end_clean();
             throw $e;
         }
-
         $this->unsanitize($data);
         return $result;
     }
-
     public $extension = 'mustache';
-
     /**
      * Returns the Parser lib object
      *
@@ -47,32 +40,25 @@ class View_Mustache extends \View
      */
     public static function parser()
     {
-        if (! empty(static::$_parser)) {
+        if (!empty(static::$_parser)) {
             return static::$_parser;
         }
-
         $options = [
             // TODO: set 'logger' with Monolog instance.
-            'cache'   => \Config::get('parser.View_Mustache.environment.cache_dir', APPPATH.'cache'.DS.'mustache'.DS),
+            'cache' => \Config::get('parser.View_Mustache.environment.cache_dir', APPPATH . 'cache' . DS . 'mustache' . DS),
             'charset' => \Config::get('parser.View_Mustache.environment.charset', 'UTF-8'),
         ];
-
         if ($partials = \Config::get('parser.View_Mustache.environment.partials', [])) {
             $options['partials'] = $partials;
         }
-
         if ($helpers = \Config::get('parser.View_Mustache.environment.helpers', [])) {
             $options['helpers'] = $helpers;
         }
-
         if ($partials_loader = \Config::get('parser.View_Mustache.environment.partials_loader', [])) {
-            $options['partials_loader'] = new Mustache_Loader_FilesystemLoader($partials_loader);
+            $options['partials_loader'] = new Mustache_loader_filesystem_Loader($partials_loader);
         }
-
         static::$_parser = new Mustache_Engine($options);
-
         return static::$_parser;
     }
 }
-
 // end of file mustache.php

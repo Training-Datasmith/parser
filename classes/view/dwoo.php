@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Fuel is a fast, lightweight, community driven PHP 5.4+ framework.
  *
@@ -11,24 +11,20 @@ declare(strict_types=1);
  * @copyright  2010 - 2019 Fuel Development Team
  * @link       https://fuelphp.com
  */
-
 namespace Parser;
 
 use Dwoo;
 use Dwoo_Compiler;
 use Dwoo_Security_Policy;
-
 class View_Dwoo extends \View
 {
     protected static $_parser;
     protected static $_parser_compiler;
     protected static $_parser_security;
-
     protected function process_file($file_override = false)
     {
         $file = $file_override ?: $this->file_name;
         $data = $this->get_data();
-
         try {
             $result = static::parser()->get($file, $data);
         } catch (\Exception $e) {
@@ -36,13 +32,10 @@ class View_Dwoo extends \View
             ob_end_clean();
             throw $e;
         }
-
         $this->unsanitize($data);
         return $result;
     }
-
     public $extension = 'tpl';
-
     /**
      * Returns the Parser lib object
      *
@@ -50,35 +43,26 @@ class View_Dwoo extends \View
      */
     public static function parser()
     {
-        if (! empty(static::$_parser)) {
+        if (!empty(static::$_parser)) {
             return static::$_parser;
         }
-
         // Parser
         static::$_parser = new Dwoo();
-        static::$_parser->setCacheTime(\Config::get('parser.View_Dwoo.environment.cache_time', 0));
-        static::$_parser->setCacheDir(\Config::get('parser.View_Dwoo.environment.cache_dir', APPPATH.'cache'.DS.'dwoo'.DS));
-        static::$_parser->setCompileDir(\Config::get('parser.View_Dwoo.environment.compile_dir', APPPATH.'cache'.DS.'dwoo'.DS.'compiled'.DS));
-
+        static::$_parser->set_cache_time(\Config::get('parser.View_Dwoo.environment.cache_time', 0));
+        static::$_parser->set_cache_dir(\Config::get('parser.View_Dwoo.environment.cache_dir', APPPATH . 'cache' . DS . 'dwoo' . DS));
+        static::$_parser->set_compile_dir(\Config::get('parser.View_Dwoo.environment.compile_dir', APPPATH . 'cache' . DS . 'dwoo' . DS . 'compiled' . DS));
         // Compiler
         static::$_parser_compiler = new Dwoo_Compiler();
-        static::$_parser_compiler->setAutoEscape(\Config::get('parser.View_Dwoo.environment.autoescape', false));
-        static::$_parser_compiler->setLooseOpeningHandling(\Config::get('parser.View_Dwoo.environment.allow_spaces', false));
-        static::$_parser_compiler->setNestedCommentsHandling(\Config::get('parser.View_Dwoo.environment.nested_comments', false));
-        static::$_parser_compiler->setDelimiters(
-            \Config::get('parser.View_Dwoo.delimiters.left', '{'),
-            \Config::get('parser.View_Dwoo.delimiters.right', '}')
-        );
-
+        static::$_parser_compiler->set_auto_escape(\Config::get('parser.View_Dwoo.environment.autoescape', false));
+        static::$_parser_compiler->set_loose_opening_handling(\Config::get('parser.View_Dwoo.environment.allow_spaces', false));
+        static::$_parser_compiler->set_nested_comments_handling(\Config::get('parser.View_Dwoo.environment.nested_comments', false));
+        static::$_parser_compiler->set_delimiters(\Config::get('parser.View_Dwoo.delimiters.left', '{'), \Config::get('parser.View_Dwoo.delimiters.right', '}'));
         // Security
         static::$_parser_security = new Dwoo_Security_Policy();
-        static::$_parser_security->setPhpHandling(\Config::get('parser.View_Dwoo.environment.allow_php_tags', 2));
-        static::$_parser_security->allowPhpFunction(\Config::get('parser.View_Dwoo.environment.allow_php_func', []));
-
-        static::$_parser->setSecurityPolicy(static::$_parser_security);
-
+        static::$_parser_security->set_php_handling(\Config::get('parser.View_Dwoo.environment.allow_php_tags', 2));
+        static::$_parser_security->allow_php_function(\Config::get('parser.View_Dwoo.environment.allow_php_func', []));
+        static::$_parser->set_security_policy(static::$_parser_security);
         return static::$_parser;
     }
 }
-
 // end of file dwoo.php

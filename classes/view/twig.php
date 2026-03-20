@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Fuel is a fast, lightweight, community driven PHP 5.4+ framework.
  *
@@ -11,73 +11,58 @@ declare(strict_types=1);
  * @copyright  2010 - 2019 Fuel Development Team
  * @link       https://fuelphp.com
  */
-
 namespace Parser;
 
 use Twig_Autoloader;
 use Twig_Environment;
 use Twig_Lexer;
 use Twig_Loader_Filesystem;
-
 class View_Twig extends \View
 {
     protected static $_parser;
     protected static $_parser_loader;
     protected static $_twig_lexer_conf;
-
     public static function _init(): void
     {
         parent::_init();
-
         // backward compatibility for Twig 1.x
         if (class_exists('Twig_Autoloader')) {
             Twig_Autoloader::register();
         }
     }
-
     protected function process_file($file_override = false)
     {
         $file = $file_override ?: $this->file_name;
-
-        $local_data  = $this->get_data('local');
+        $local_data = $this->get_data('local');
         $global_data = $this->get_data('global');
-
         // Extract View name/extension (ex. "template.twig")
         $view_name = pathinfo($file, PATHINFO_BASENAME);
-
         // Twig Loader
         $views_paths = \Config::get('parser.View_Twig.views_paths', [APPPATH . 'views']);
         array_unshift($views_paths, pathinfo($file, PATHINFO_DIRNAME));
         static::$_parser_loader = new Twig_Loader_Filesystem($views_paths);
-
-        if (! empty($global_data)) {
+        if (!empty($global_data)) {
             foreach ($global_data as $key => $value) {
-                static::parser()->addGlobal($key, $value);
+                static::parser()->add_global($key, $value);
             }
         } else {
             // Init the parser if you have no global data
             static::parser();
         }
-
         $twig_lexer = new Twig_Lexer(static::$_parser, static::$_twig_lexer_conf);
-        static::$_parser->setLexer($twig_lexer);
-
+        static::$_parser->set_lexer($twig_lexer);
         try {
-            $result = static::parser()->loadTemplate($view_name)->render($local_data);
+            $result = static::parser()->load_template($view_name)->render($local_data);
         } catch (\Exception $e) {
             // Delete the output buffer & re-throw the exception
             ob_end_clean();
             throw $e;
         }
-
         $this->unsanitize($local_data);
         $this->unsanitize($global_data);
-
         return $result;
     }
-
     public $extension = 'twig';
-
     /**
      * Returns the Parser lib object
      *
@@ -85,32 +70,24 @@ class View_Twig extends \View
      */
     public static function parser()
     {
-        if (! empty(static::$_parser)) {
-            static::$_parser->setLoader(static::$_parser_loader);
+        if (!empty(static::$_parser)) {
+            static::$_parser->set_loader(static::$_parser_loader);
             return static::$_parser;
         }
-
         // Twig Environment
         $twig_env_conf = \Config::get('parser.View_Twig.environment', ['optimizer' => -1]);
         static::$_parser = new Twig_Environment(static::$_parser_loader, $twig_env_conf);
-
         foreach (\Config::get('parser.View_Twig.extensions', []) as $ext) {
-            static::$_parser->addExtension(new $ext());
+            static::$_parser->add_extension(new $ext());
         }
-
         // Twig Lexer
         static::$_twig_lexer_conf = \Config::get('parser.View_Twig.delimiters', null);
         if (isset(static::$_twig_lexer_conf)) {
-            isset(static::$_twig_lexer_conf['tag_block'])
-                and static::$_twig_lexer_conf['tag_block'] = array_values(static::$_twig_lexer_conf['tag_block']);
-            isset(static::$_twig_lexer_conf['tag_comment'])
-                and static::$_twig_lexer_conf['tag_comment'] = array_values(static::$_twig_lexer_conf['tag_comment']);
-            isset(static::$_twig_lexer_conf['tag_variable'])
-                and static::$_twig_lexer_conf['tag_variable'] = array_values(static::$_twig_lexer_conf['tag_variable']);
+            isset(static::$_twig_lexer_conf['tag_block']) and static::$_twig_lexer_conf['tag_block'] = array_values(static::$_twig_lexer_conf['tag_block']);
+            isset(static::$_twig_lexer_conf['tag_comment']) and static::$_twig_lexer_conf['tag_comment'] = array_values(static::$_twig_lexer_conf['tag_comment']);
+            isset(static::$_twig_lexer_conf['tag_variable']) and static::$_twig_lexer_conf['tag_variable'] = array_values(static::$_twig_lexer_conf['tag_variable']);
         }
-
         return static::$_parser;
     }
 }
-
 // end of file twig.php

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Fuel is a fast, lightweight, community driven PHP 5.4+ framework.
  *
@@ -11,18 +11,15 @@ declare(strict_types=1);
  * @copyright  2010 - 2019 Fuel Development Team
  * @link       https://fuelphp.com
  */
-
 namespace Parser;
 
-use MtHaml;
+use Mt_Haml;
 use Twig_Environment;
 use Twig_Lexer;
 use Twig_Loader_Filesystem;
-
-class View_HamlTwig extends View_Twig
+class View_haml_Twig extends View_Twig
 {
     protected static $_environment;
-
     /**
      * @access public
      * @static
@@ -31,18 +28,13 @@ class View_HamlTwig extends View_Twig
     {
         // Include View_HamlTwig file(s) defined in config.
         $includes = \Config::get('parser.View_HamlTwig.include');
-
         foreach ((array) $includes as $include) {
             require $include;
             static::$loaded_files[$include] = true;
         }
-
         parent::_init();
-
-        MtHaml\Autoloader::register();
-
+        Mt_Haml\Autoloader::register();
     }
-
     /**
      * We Override the parser Loader here
      *
@@ -52,32 +44,26 @@ class View_HamlTwig extends View_Twig
     protected function process_file($file_override = false)
     {
         $file = $file_override ?: $this->file_name;
-
-        $local_data  = $this->get_data('local');
+        $local_data = $this->get_data('local');
         $global_data = $this->get_data('global');
-
         // Extract View name/extension (ex. "template.twig")
         $view_name = pathinfo($file, PATHINFO_BASENAME);
-
         // Twig Loader
         $views_paths = \Config::get('parser.View_Twig.views_paths', [APPPATH . 'views']);
         array_unshift($views_paths, pathinfo($file, PATHINFO_DIRNAME));
-
-        if (! empty($global_data)) {
+        if (!empty($global_data)) {
             foreach ($global_data as $key => $value) {
-                static::parser()->addGlobal($key, $value);
+                static::parser()->add_global($key, $value);
             }
         } else {
             // Init the parser if you have no global data
             static::parser();
         }
-
         // Set the HtHaml Twig loader
         $filesyst = new Twig_Loader_Filesystem($views_paths);
-        static::$_parser_loader = new MtHaml\Support\Twig\Loader(static::$_environment, $filesyst);
-
+        static::$_parser_loader = new Mt_Haml\Support\Twig\Loader(static::$_environment, $filesyst);
         $twig_lexer = new Twig_Lexer(static::$_parser, static::$_twig_lexer_conf);
-        static::$_parser->setLexer($twig_lexer);
+        static::$_parser->set_lexer($twig_lexer);
         try {
             $result = static::parser()->render($view_name, $local_data);
         } catch (\Exception $e) {
@@ -85,13 +71,10 @@ class View_HamlTwig extends View_Twig
             ob_end_clean();
             throw $e;
         }
-
         $this->unsanitize($local_data);
         $this->unsanitize($global_data);
-
         return $result;
     }
-
     /**
      * @access public
      * @static
@@ -101,16 +84,13 @@ class View_HamlTwig extends View_Twig
     {
         if (empty(static::$_parser)) {
             parent::parser();
-
             // Register Haml twig supports
-            static::$_parser->addExtension(new MtHaml\Support\Twig\Extension());
+            static::$_parser->add_extension(new Mt_Haml\Support\Twig\Extension());
             // Store MtHaml environment
-            static::$_environment	= new MtHaml\Environment('twig', \Config::get('parser.View_HamlTwig.environment'));
-
+            static::$_environment = new Mt_Haml\Environment('twig', \Config::get('parser.View_HamlTwig.environment'));
             return static::$_parser;
         }
         return parent::parser();
     }
 }
-
 // end of file hamltwig.php

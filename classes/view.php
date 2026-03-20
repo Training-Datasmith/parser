@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Fuel is a fast, lightweight, community driven PHP 5.4+ framework.
  *
@@ -11,7 +11,6 @@ declare(strict_types=1);
  * @copyright  2010 - 2019 Fuel Development Team
  * @link       https://fuelphp.com
  */
-
 namespace Parser;
 
 class View extends \Fuel\Core\View
@@ -20,25 +19,21 @@ class View extends \Fuel\Core\View
      * @var  array  Holds the list of loaded files.
      */
     protected static $loaded_files = [];
-
     public static function _init(): void
     {
         \Config::load('parser', true);
-
         // Get class name
         $class = \Inflector::denamespace(static::class);
-
         if ($class !== self::class) {
             // Include necessary files
-            foreach ((array) \Config::get('parser.'.$class.'.include', []) as $include) {
-                if (! array_key_exists($include, static::$loaded_files)) {
+            foreach ((array) \Config::get('parser.' . $class . '.include', []) as $include) {
+                if (!array_key_exists($include, static::$loaded_files)) {
                     require $include;
                     static::$loaded_files[$include] = true;
                 }
             }
         }
     }
-
     /**
      * Forges a new View object based on the extension
      *
@@ -50,59 +45,46 @@ class View extends \Fuel\Core\View
     public static function forge($file = null, $data = null, $auto_encode = null)
     {
         $class = null;
-
         // if a view file was given
         if ($file !== null) {
             // get its type and check if a parser extension is defined
             $extension = pathinfo($file, PATHINFO_EXTENSION);
-            $class = \Config::get('parser.extensions.'.$extension, null);
-
+            $class = \Config::get('parser.extensions.' . $extension, null);
             // Only get rid of the extension if it is not an absolute file path
             if (strlen($file) > 1 and $file[0] !== '/' and $file[1] !== ':') {
-                $file = $extension ? preg_replace('/\.'.preg_quote($extension).'$/i', '', $file) : $file;
+                $file = $extension ? preg_replace('/\.' . preg_quote($extension) . '$/i', '', $file) : $file;
             }
         }
-
         // if no extension is defined, use the called class
         if ($class === null) {
             $class = static::class;
-        }
-
-        // class can also be an array config
-        elseif (is_array($class)) {
+        } elseif (is_array($class)) {
             $class['extension'] and $extension = $class['extension'];
             $class = $class['class'];
         }
-
         // if no auto-encode flag is given, get it from config
         if ($auto_encode === null) {
-            $auto_encode = \Config::get('parser.'.$class.'.auto_encode', null);
+            $auto_encode = \Config::get('parser.' . $class . '.auto_encode', null);
         }
-
         // include necessary parser files
-        foreach ((array) \Config::get('parser.'.$class.'.include', []) as $include) {
-            if (! array_key_exists($include, static::$loaded_files)) {
+        foreach ((array) \Config::get('parser.' . $class . '.include', []) as $include) {
+            if (!array_key_exists($include, static::$loaded_files)) {
                 require $include;
                 static::$loaded_files[$include] = true;
             }
         }
-
         // validate the class is a View subclass before instantiation
-        if (! is_subclass_of($class, \View::class)) {
-            throw new \FuelException('Invalid parser class: '.$class);
+        if (!is_subclass_of($class, \View::class)) {
+            throw new \Fuel_Exception('Invalid parser class: ' . $class);
         }
-
         // instantiate the Parser class without auto-loading the view file
         $view = new $class(null, $data, $auto_encode);
-
         // if we have a view file, set it
         if ($file) {
             // Set extension when given
             empty($extension) or $view->extension = $extension;
-
             $view->set_filename($file, true);
         }
-
         // and return the view object
         return $view;
     }
