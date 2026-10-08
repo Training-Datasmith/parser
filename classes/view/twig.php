@@ -88,6 +88,8 @@ class View_Twig extends \View
 			static::parser();
 		}
 
+		static::$_twig_lexer_conf = static::twig_lexer_conf();
+
 		// check if we're using Twig v3
 		if (class_exists('\Twig\Lexer'))
 		{
@@ -101,11 +103,14 @@ class View_Twig extends \View
 
 		try
 		{
-			// Arguments of loadTemplate changed in twig 3.x
+			if (static::$_version === null)
+			{
+				static::$_version = (float) substr(class_exists('\Twig\Environment') ? \Twig\Environment::VERSION : Twig_Environment::VERSION, 0, 3);
+			}
+
 			if (static::$_version >= 3)
 			{
-				$template_classe = static::parser()->getTemplateClass($view_name);
-				$result = static::parser()->loadTemplate($template_classe, $view_name)->render($local_data);
+				$result = static::parser()->load($view_name)->render($local_data);
 			}
 			else
 			{
@@ -114,7 +119,6 @@ class View_Twig extends \View
 		}
 		catch (\Exception $e)
 		{
-			// Delete the output buffer & re-throw the exception
 			if (ob_get_level() > 0)
 			{
 				ob_end_clean();
@@ -158,22 +162,44 @@ class View_Twig extends \View
 
 		foreach (\Config::get('parser.View_Twig.extensions') as $ext)
 		{
-			static::$_parser->addExtension(new $ext());
+			$extension = new $ext();
+			$extension_class = \get_class($extension);
+			if ( ! static::$_parser->hasExtension($extension_class))
+			{
+				static::$_parser->addExtension($extension);
+			}
 		}
 
-		// Twig Lexer
-		static::$_twig_lexer_conf = \Config::get('parser.View_Twig.delimiters', null);
-		if (isset(static::$_twig_lexer_conf))
-		{
-			isset(static::$_twig_lexer_conf['tag_block'])
-				and static::$_twig_lexer_conf['tag_block'] = array_values(static::$_twig_lexer_conf['tag_block']);
-			isset(static::$_twig_lexer_conf['tag_comment'])
-				and static::$_twig_lexer_conf['tag_comment'] = array_values(static::$_twig_lexer_conf['tag_comment']);
-			isset(static::$_twig_lexer_conf['tag_variable'])
-				and static::$_twig_lexer_conf['tag_variable'] = array_values(static::$_twig_lexer_conf['tag_variable']);
-		}
+		static::$_twig_lexer_conf = static::twig_lexer_conf();
 
 		return static::$_parser;
+	}
+
+	protected static function twig_lexer_conf()
+	{
+		$defaults = array(
+			'tag_block'    => array('{%', '%}'),
+			'tag_comment'  => array('{#', '#}'),
+			'tag_variable' => array('{{', '}}'),
+		);
+		$lexer_conf = array_merge($defaults, (array) \Config::get('parser.View_Twig.delimiters', array()));
+		foreach (array('tag_block', 'tag_comment', 'tag_variable') as $key)
+		{
+			if ( ! isset($lexer_conf[$key]))
+			{
+				continue;
+			}
+			if (isset($lexer_conf[$key]['left'], $lexer_conf[$key]['right']))
+			{
+				$lexer_conf[$key] = array($lexer_conf[$key]['left'], $lexer_conf[$key]['right']);
+			}
+			else
+			{
+				$lexer_conf[$key] = array_values($lexer_conf[$key]);
+			}
+		}
+
+		return $lexer_conf;
 	}
 }
 

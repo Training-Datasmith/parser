@@ -23,14 +23,14 @@ class View_Lex extends \View
 			return static::$_parser;
 		}
 
-		static::$_parser = new \Lex\Parser();
+		static::$_parser = new Lex_Parser();
 
 		return static::$_parser;
 	}
 
 	public static function injectNoparse($template)
 	{
-		\Lex\Parser::injectNoparse($template);
+		return \Lex\Parser::injectNoparse($template);
 	}
 
 	public $extension = 'lex';

@@ -37,6 +37,7 @@ return array(
 		'phptal'   => 'View_Phptal',
 		'lex'      => 'View_Lex',
 		'plates'   => array('class' => 'View_Plates', 'extension' => 'tpl'),
+		'handlebars' => 'View_Handlebars',
 	),
 
 	// ------------------------------------------------------------------------

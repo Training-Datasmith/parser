@@ -51,14 +51,14 @@ class View_Jade extends \View
 	 */
 	protected function tale_parser($cachepath)
 	{
-		// get the config
-		$config = \Config::get('parser.View_Jade', array());
+		$raw = \Config::get('parser.View_Jade', array());
 
-		// add the cache path for this template
-		$config['cachePath'] = $cachepath;
-
-		// create a renderer instance
-		return new Tale\Renderer($config);
+		return new Tale\Renderer(array(
+			'cachePath' => $cachepath,
+			'paths' => isset($raw['paths']) ? (array) $raw['paths'] : array(APPPATH.'views'),
+			'pretty' => isset($raw['pretty']) ? $raw['pretty'] : false,
+			'ttl' => isset($raw['lifetime']) ? $raw['lifetime'] : 0,
+		));
 	}
 
 	/**
@@ -81,7 +81,21 @@ class View_Jade extends \View
 		elseif (class_exists('Tale\\Jade\\Renderer'))
 		{
 			// render the template
-			$result = $this->jade_parser($this->cache_init($file))->render($file, $data = $this->get_data());
+			$jade_path = $file;
+			if (pathinfo($jade_path, PATHINFO_EXTENSION) !== 'jade')
+			{
+				$jade_path .= '.jade';
+			}
+			$jade_path = realpath($jade_path) ?: $jade_path;
+			$renderer = $this->tale_parser($this->cache_init($file));
+			$compiler = $renderer->getCompiler();
+			$files = new \ReflectionProperty($compiler, 'files');
+			$files->setAccessible(true);
+			if ($files->getValue($compiler) === null)
+			{
+				$files->setValue($compiler, array());
+			}
+			$result = $renderer->render($jade_path, $data = $this->get_data());
 
 			// disable sanitization on objects that support it
 			$this->unsanitize($data);

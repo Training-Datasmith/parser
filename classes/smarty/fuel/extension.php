@@ -124,7 +124,7 @@ class Smarty_Fuel_Extension
 	{
 		if (isset($params['item']))
 		{
-			$default = $params['default'] ? null : $params['default'];
+			$default = isset($params['default']) ? $params['default'] : null;
 			return \Config::get($params['item'], $default);
 		}
 		return '';
@@ -357,7 +357,7 @@ class Smarty_Fuel_Extension
 		$value = isset($params['value']) ? $params['value'] : null;
 		$attributes = isset($params['attrs']) ? $params['attrs'] : array();
 		$checked = isset($params['checked']) ? $params['checked'] : null;
-		return \Form::checkbox($params['field'], $value, $checked, $attributes);
+		return \Form::radio($params['field'], $value, $checked, $attributes);
 	}
 
 	/**

@@ -31,17 +31,18 @@ class View_Plates extends \View
 		// any extensions defined?
 		foreach (\Config::get('parser.View_Plates.extensions', array()) as $extension)
 		{
-			if (class_exists($extension))
+			$name = is_object($extension) ? get_class($extension) : (string) $extension;
+			if (is_string($extension) && class_exists($extension))
 			{
 				$extension = new $extension();
 			}
-			if ($extension instanceOf League\Plates\Extension\ExtensionInterface)
+			if ($extension instanceof \League\Plates\Extension\ExtensionInterface)
 			{
-				static::$_parser->loadExtension($class);
+				static::$_parser->loadExtension($extension);
 			}
 			else
 			{
-				throw new \FuelException("Parser: defined Plates extension \"$extension\" is not a valid extension");
+				throw new \FuelException('Parser: defined Plates extension "'.$name.'" is not a valid extension');
 			}
 		}
 
