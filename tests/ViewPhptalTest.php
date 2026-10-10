@@ -8,7 +8,7 @@ class ViewPhptalTest extends ParserTestCase
 	{
 		if (PHP_VERSION_ID >= 80000)
 		{
-			$this->markTestSkipped('phptal/phptal 1.4.0 is not installed on PHP 8+ in this harness.');
+			$this->markTestSkipped('DEFERRED: phptal/phptal 1.4.0 is not installed on PHP 8+ in this harness.');
 		}
 		parent::setUp();
 	}

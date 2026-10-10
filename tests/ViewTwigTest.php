@@ -14,9 +14,9 @@ class ViewTwigTest extends ParserTestCase
 	public function testCustomVariableDelimiters()
 	{
 		\Config::set('parser.View_Twig.delimiters', array(
-			'tag_block'    => array('{%', '%}'),
-			'tag_comment'  => array('{#', '#}'),
-			'tag_variable' => array('[[', ']]'),
+			'tag_block'    => array('left' => '{%', 'right' => '%}'),
+			'tag_comment'  => array('left' => '{#', 'right' => '#}'),
+			'tag_variable' => array('left' => '[[', 'right' => ']]'),
 		));
 		$this->resetParserStatics();
 		$this->writeView('custom.twig', 'Hello [[ name ]]');

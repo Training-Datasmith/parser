@@ -62,7 +62,6 @@ abstract class ParserTestCase extends TestCase
 		});
 		$this->bindStatic('Parser\\View_Smarty', function () {
 			static::$_parser = null;
-			static::$_extensions_parser = null;
 		});
 		$this->bindStatic('Parser\\View_Dwoo', function () {
 			static::$_parser = null;

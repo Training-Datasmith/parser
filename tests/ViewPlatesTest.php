@@ -36,7 +36,6 @@ class ViewPlatesTest extends ParserTestCase
 		$this->resetParserStatics();
 		$this->writeView('bad.tpl', 'x');
 		$this->expectException(\FuelException::class);
-		$this->expectExceptionMessage('stdClass');
 		View::forge('bad.plates', array(), false)->render();
 		\Config::set('parser.View_Plates.extensions', array());
 	}

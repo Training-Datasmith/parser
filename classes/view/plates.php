@@ -32,7 +32,7 @@ class View_Plates extends \View
 		foreach (\Config::get('parser.View_Plates.extensions', array()) as $extension)
 		{
 			$name = is_object($extension) ? get_class($extension) : (string) $extension;
-			if (is_string($extension) && class_exists($extension))
+			if (class_exists($extension))
 			{
 				$extension = new $extension();
 			}
