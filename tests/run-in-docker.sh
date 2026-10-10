@@ -4,7 +4,24 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-PHP_IMAGE="${PHP_IMAGE:-php@sha256:42ffbc0798e4449bbd1e14fc4dcb87774aa1ad1900a09ef6a965bc0880aa2161}"
+PHP_IMAGE_72="php@sha256:42ffbc0798e4449bbd1e14fc4dcb87774aa1ad1900a09ef6a965bc0880aa2161"
+PHP_IMAGE_83="php@sha256:aafe21201943a8a6e497ddfb471e2ce68ada76adede38c7d61fede8918b24319"
+
+PHP_SELECTOR="${PHP_SELECTOR:-7.2}"
+case "${PHP_SELECTOR}" in
+	7.2|72) PHP_IMAGE="${PHP_IMAGE:-${PHP_IMAGE_72}}" ;;
+	8.3|83) PHP_IMAGE="${PHP_IMAGE:-${PHP_IMAGE_83}}" ;;
+	*)
+		echo "PHP_SELECTOR must be 7.2 or 8.3 (got: ${PHP_SELECTOR})" >&2
+		exit 1
+		;;
+esac
+
+if [[ "${PHP_IMAGE}" != *@sha256:* ]]; then
+	echo "PHP_IMAGE must be digest-pinned (image@sha256:...); got: ${PHP_IMAGE}" >&2
+	exit 1
+fi
+
 COMPOSER_SHA256="8b3f41253363f0645402d1951d6e7f02adedeef29c16de6074763e463e25c23f"
 FUEL_CORE_URL="https://api.github.com/repos/fuel/core/zipball/c82b10b8000363bdc6951f023e455c4862ad3fee"
 FUEL_CORE_SHA256="26375739897a2655ad10228e8616f62d89cefc6bbb0ae78fd0c00991366769ff"

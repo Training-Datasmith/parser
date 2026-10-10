@@ -8,12 +8,9 @@ abstract class ParserTestCase extends TestCase
 
 	protected $routerRoutesSnapshot;
 
-	protected $obLevel;
-
 	protected function setUp(): void
 	{
 		parent::setUp();
-		$this->obLevel = ob_get_level();
 		$this->resetParserStatics();
 		$this->viewsDir = APPPATH.'views'.DS;
 		if (! is_dir($this->viewsDir))
@@ -36,10 +33,6 @@ abstract class ParserTestCase extends TestCase
 
 	protected function tearDown(): void
 	{
-		while (ob_get_level() > $this->obLevel)
-		{
-			ob_end_clean();
-		}
 		$this->resetParserStatics();
 		\Router::$routes = $this->routerRoutesSnapshot;
 		\Config::load('parser', true);
@@ -48,6 +41,7 @@ abstract class ParserTestCase extends TestCase
 
 	protected function resetParserStatics()
 	{
+		$this->clearConfigItemCache();
 		$this->bindStatic('Parser\\View', function () {
 			static::$loaded_files = array();
 		});
@@ -58,7 +52,6 @@ abstract class ParserTestCase extends TestCase
 			static::$_parser = null;
 			static::$_parser_loader = null;
 			static::$_twig_lexer_conf = null;
-			static::$_version = null;
 		});
 		$this->bindStatic('Parser\\View_Smarty', function () {
 			static::$_parser = null;
@@ -86,7 +79,6 @@ abstract class ParserTestCase extends TestCase
 			static::$_parser_loader = null;
 			static::$_environment = null;
 			static::$_twig_lexer_conf = null;
-			static::$_version = null;
 		});
 		$this->bindStatic('Lex\\Parser', function () {
 			static::$data = null;
@@ -96,6 +88,13 @@ abstract class ParserTestCase extends TestCase
 		$this->bindStatic('Fuel\\Core\\View', function () {
 			static::$global_data = array();
 			static::$global_filter = array();
+		});
+	}
+
+	protected function clearConfigItemCache()
+	{
+		$this->bindStatic('Fuel\\Core\\Config', function () {
+			static::$itemcache = array();
 		});
 	}
 

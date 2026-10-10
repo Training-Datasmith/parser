@@ -81,15 +81,7 @@ class View_Jade extends \View
 		elseif (class_exists('Tale\\Jade\\Renderer'))
 		{
 			// render the template
-			$renderer = $this->tale_parser($this->cache_init($file));
-			$compiler = $renderer->getCompiler();
-			$files = new \ReflectionProperty($compiler, 'files');
-			$files->setAccessible(true);
-			if ($files->getValue($compiler) === null)
-			{
-				$files->setValue($compiler, array());
-			}
-			$result = $renderer->render($file, $data = $this->get_data());
+			$result = $this->tale_parser($this->cache_init($file))->render($file, $data = $this->get_data());
 
 			// disable sanitization on objects that support it
 			$this->unsanitize($data);

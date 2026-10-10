@@ -103,11 +103,6 @@ class View_Twig extends \View
 
 		try
 		{
-			if (static::$_version === null)
-			{
-				static::$_version = (float) substr(class_exists('\Twig\Environment') ? \Twig\Environment::VERSION : Twig_Environment::VERSION, 0, 3);
-			}
-
 			// Arguments of loadTemplate changed in twig 3.x
 			if (static::$_version >= 3)
 			{

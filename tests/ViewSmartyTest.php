@@ -13,7 +13,8 @@ class ViewSmartyTest extends ParserTestCase
 
 	public function testDelimitersFromConfig()
 	{
-		\Config::set('parser.View_Smarty.delimiters', array('left' => '<%', 'right' => '%>'));
+		\Config::set('parser.View_Smarty.delimiters.left', '<%');
+		\Config::set('parser.View_Smarty.delimiters.right', '%>');
 		$this->resetParserStatics();
 		$this->writeView('custom.smarty', 'Hello <%$name%>');
 		$html = View::forge('custom.smarty', array('name' => 'Ada'), false)->render();
