@@ -23,7 +23,7 @@ class View_Lex extends \View
 			return static::$_parser;
 		}
 
-		static::$_parser = new Lex_Parser();
+		static::$_parser = new \Lex\Parser();
 
 		return static::$_parser;
 	}

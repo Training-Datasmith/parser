@@ -19,5 +19,6 @@ nbproject/
 .idea
 *.tmproj
 *.sublime-project
-*.sublime-workspacetests/app/logs/
+*.sublime-workspace
+tests/app/logs/
 tests/app/views/

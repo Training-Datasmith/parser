@@ -6,11 +6,15 @@ cd "$ROOT"
 
 PHP_IMAGE="${PHP_IMAGE:-php@sha256:42ffbc0798e4449bbd1e14fc4dcb87774aa1ad1900a09ef6a965bc0880aa2161}"
 COMPOSER_SHA256="8b3f41253363f0645402d1951d6e7f02adedeef29c16de6074763e463e25c23f"
+FUEL_CORE_URL="https://api.github.com/repos/fuel/core/zipball/c82b10b8000363bdc6951f023e455c4862ad3fee"
+FUEL_CORE_SHA256="26375739897a2655ad10228e8616f62d89cefc6bbb0ae78fd0c00991366769ff"
 
 ORDER_EXTRA=("$@")
 
 sudo docker run --rm \
 	-e "COMPOSER_SHA256=${COMPOSER_SHA256}" \
+	-e "FUEL_CORE_URL=${FUEL_CORE_URL}" \
+	-e "FUEL_CORE_SHA256=${FUEL_CORE_SHA256}" \
 	-v "$ROOT:/app" -w /app "$PHP_IMAGE" \
 	bash -lc '
 set -euo pipefail
@@ -40,26 +44,40 @@ if [ ! -x /usr/local/bin/phpunit ] || [ ! -f /tmp/composer.phar ]; then
   echo "${PHPUNIT_SHA256}  /usr/local/bin/phpunit" | sha256sum -c -
   chmod +x /usr/local/bin/phpunit
 fi
+install_fuel_core() {
+  if [ -f fuel/.fuel-core-installed ] && [ "$(cat fuel/.fuel-core-installed)" = "${FUEL_CORE_SHA256}" ] && [ -f fuel/packages/core/bootstrap.php ]; then
+    return 0
+  fi
+  if ! command -v unzip >/dev/null; then
+    apt-get install -y --no-install-recommends unzip curl ca-certificates
+  fi
+  curl -fsSL -o /tmp/fuel-core.zip "${FUEL_CORE_URL}"
+  echo "${FUEL_CORE_SHA256}  /tmp/fuel-core.zip" | sha256sum -c -
+  rm -rf fuel/packages/core /tmp/fuel-core-extract
+  mkdir -p /tmp/fuel-core-extract fuel/packages
+  unzip -q /tmp/fuel-core.zip -d /tmp/fuel-core-extract
+  rm -rf fuel/packages/core
+  mv /tmp/fuel-core-extract/* fuel/packages/core
+  rmdir /tmp/fuel-core-extract || true
+  mkdir -p fuel
+  echo "${FUEL_CORE_SHA256}" > fuel/.fuel-core-installed
+}
+install_fuel_core
 if php -r "exit(version_compare(PHP_VERSION, \"8.0.0\", \">=\") ? 0 : 1);"; then
   php tests/filter-composer-php83.php
-  if [ ! -f vendor/.installed-php83 ]; then
-    rm -rf vendor composer.lock
-    COMPOSER=/tmp/composer.php83.json php /tmp/composer.phar update --no-interaction --prefer-dist
-    rm -f vendor/.installed-php72
-    touch vendor/.installed-php83
-  fi
+  COMPOSER_JSON=/tmp/composer.php83.json
+  MARKER=vendor/.installed-php83
 else
-  if [ ! -f vendor/.installed-php72 ]; then
-    rm -rf vendor composer.lock
-    php /tmp/composer.phar update --no-interaction --prefer-dist
-    rm -f vendor/.installed-php83
-    touch vendor/.installed-php72
-  fi
+  php tests/prepare-composer-dev.php
+  COMPOSER_JSON=/tmp/composer.dev.json
+  MARKER=vendor/.installed-php72
+fi
+if [ ! -f "${MARKER}" ]; then
+  rm -rf vendor composer.lock
+  COMPOSER="${COMPOSER_JSON}" php /tmp/composer.phar update --no-interaction --prefer-dist
+  rm -f vendor/.installed-php72 vendor/.installed-php83
+  touch "${MARKER}"
 fi
 php -r "echo PHP_VERSION, PHP_EOL;"
-if php -r "exit(version_compare(PHP_VERSION, \"8.0.0\", \">=\") ? 0 : 1);"; then
-  php -d error_reporting=24575 /usr/local/bin/phpunit --configuration "${PHPUNIT_CONFIG}" --do-not-cache-result "$@"
-else
-  phpunit --configuration "${PHPUNIT_CONFIG}" --do-not-cache-result "$@"
-fi
+php /usr/local/bin/phpunit --configuration "${PHPUNIT_CONFIG}" --do-not-cache-result "$@"
 ' _ "${ORDER_EXTRA[@]}"

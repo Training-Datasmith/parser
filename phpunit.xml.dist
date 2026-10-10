@@ -6,7 +6,7 @@
          failOnRisky="true"
          failOnWarning="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
-         beStrictAboutOutputDuringTests="false"
+         beStrictAboutOutputDuringTests="true"
          executionOrder="random"
          resolveDependencies="true">
     <php>
