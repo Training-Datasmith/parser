@@ -1,3 +1,10 @@
+composer.lock
+.phpunit.result.cache
+vendor/
+fuel/
+tests/app/cache/
+tests/app/tmp/
+pkg-overlay/
 *~
 *.bak
 Thumbs.db
@@ -13,3 +20,5 @@ nbproject/
 *.tmproj
 *.sublime-project
 *.sublime-workspace
+tests/app/logs/
+tests/app/views/

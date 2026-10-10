@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         executionOrder="random"
+         resolveDependencies="true">
+    <php>
+        <server name="doc_root" value="tests/"/>
+        <server name="app_path" value="tests/app"/>
+        <server name="core_path" value="fuel/packages/core"/>
+        <server name="package_path" value="tests/pkg"/>
+        <server name="vendor_path" value="vendor"/>
+        <server name="FUEL_ENV" value="test"/>
+    </php>
+    <testsuites>
+        <testsuite name="parser">
+            <directory suffix="Test.php">tests</directory>
+            <exclude>tests/pkg</exclude>
+            <exclude>tests/app</exclude>
+            <exclude>tests/Fixtures</exclude>
+        </testsuite>
+    </testsuites>
+</phpunit>
